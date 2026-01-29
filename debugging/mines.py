@@ -53,6 +53,14 @@ class Minesweeper:
                         self.reveal(nx, ny)
         return True
 
+    def check_win(self):
+        revealed_count = 0
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.revealed[y][x]:
+                    revealed_count += 1
+        return revealed_count == (self.width * self.height - len(self.mines))
+
     def play(self):
         while True:
             self.print_board()
@@ -62,6 +70,10 @@ class Minesweeper:
                 if not self.reveal(x, y):
                     self.print_board(reveal=True)
                     print("Game Over! You hit a mine.")
+                    break
+                if self.check_win():
+                    self.print_board(reveal=True)
+                    print("Congratulations! You've won the game.")
                     break
             except ValueError:
                 print("Invalid input. Please enter numbers only.")
